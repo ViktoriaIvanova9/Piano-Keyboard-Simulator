@@ -1,4 +1,10 @@
+@font-face {
+    font-family: 'Bellota-LightItalic';
+    src: url('../fonts/Bellota-LightItalic.ttf');
+}
+
 body {
+    font-family: 'Bellota-LightItalic';
     background-image: url("../images/notes3.jpg");
     background-size: 100%;
     margin: 0;
