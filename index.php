@@ -14,8 +14,8 @@
     <div class="container">
         <div class="piano-container">
             <ul class="piano-keys-list">
-                <li class="piano-keys white-key" data-key="01" data-note="c4"></li>
-                <li class="piano-keys black-key" data-key="02" data-note="c#"></li>
+                <li class="piano-keys white-key" data-key="01" data-note="a"></li>
+                <li class="piano-keys black-key" data-key="02" data-note="s"></li>
                 <li class="piano-keys white-key" data-key="03" data-note="d"></li>
                 <li class="piano-keys black-key" data-key="04" data-note="d#"></li>
                 <li class="piano-keys white-key" data-key="05" data-note="e"></li>
@@ -52,6 +52,10 @@
                 <li class="piano-keys white-key" data-key="36" data-note="b6"></li>
             </ul>
         </div>
+    <div class="controls">
+        <button id="record-btn">Start Recording</button>
+        <button id="play-btn" disabled>Play Recording</button>
+     </div>
     </div>
 </body>
 
