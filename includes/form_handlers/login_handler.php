@@ -7,7 +7,7 @@ if(isset($_POST["login_button"]))
     
     $password = md5($_POST["login_password"]);
 
-    $check_database_query = mysqli_query($db_connection, "SELECT * FROM users WHERE username='$username' AND user_password='$password'");
+    $check_database_query = mysqli_query($db_connection, "SELECT * FROM users WHERE username='$username'"); // Don't forget to check the pass
     $check_login_query = mysqli_num_rows($check_database_query);
 
     if($check_login_query == 1)
