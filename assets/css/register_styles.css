@@ -1,0 +1,93 @@
+body {
+    background-image: url("../images/notes3.jpg");
+    background-size: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #b9bae2;
+    font-family: Calibri;
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    background-color: black;
+    color: white;
+}
+
+.tab {
+    flex: 1;
+    text-align: center;
+    padding: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.tab:hover {
+    background-color: gray;
+}
+
+.tab.active {
+    background-color: #4C4E4E;
+}
+
+.forms-container {
+    padding: 20px;
+}
+
+.user-form {
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+    border-radius: 5px;
+}
+
+.user-form.active {
+    display: block;
+    flex-direction: column;
+    gap: 15px;
+    border-radius: 5px;
+}
+
+.user-form input,
+.user-form select,
+.user-form button {
+    padding: 10px;
+    font-size: 14px;
+    border: 2px solid rgb(175, 159, 159);
+    border-radius: 5px;
+}
+
+.user-form select {
+    background-color: white;
+}
+
+.user-form button {
+    background-color: black;
+    color: white;
+    border: 1px solid rgb(128, 128, 128);
+    cursor: pointer;
+}
+
+.user-form button:hover {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+}
+
+.user-form select:hover,
+.user-form input:hover {
+    border-color: rgb(128, 128, 128);
+}
