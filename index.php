@@ -14,20 +14,20 @@
     <div class="container">
         <div class="piano-container">
             <ul class="piano-keys-list">
-                <li class="piano-keys white-key" data-key="01" data-note="a"></li>
-                <li class="piano-keys black-key" data-key="02" data-note="s"></li>
-                <li class="piano-keys white-key" data-key="03" data-note="d"></li>
-                <li class="piano-keys black-key" data-key="04" data-note="d#"></li>
+                <li class="piano-keys white-key" data-key="01" data-note="q"></li>
+                <li class="piano-keys black-key" data-key="02" data-note="2"></li>
+                <li class="piano-keys white-key" data-key="03" data-note="w"></li>
+                <li class="piano-keys black-key" data-key="04" data-note="3"></li>
                 <li class="piano-keys white-key" data-key="05" data-note="e"></li>
-                <li class="piano-keys white-key" data-key="06" data-note="f"></li>
-                <li class="piano-keys black-key" data-key="07" data-note="f#"></li>
-                <li class="piano-keys white-key" data-key="08" data-note="g"></li>
-                <li class="piano-keys black-key" data-key="09" data-note="g#"></li>
-                <li class="piano-keys white-key" data-key="10" data-note="a"></li>
-                <li class="piano-keys black-key" data-key="11" data-note="a#"></li>
-                <li class="piano-keys white-key" data-key="12" data-note="b"></li>
-                <li class="piano-keys white-key" data-key="13" data-note="c5"></li>
-                <li class="piano-keys black-key" data-key="14" data-note="c#5"></li>
+                <li class="piano-keys white-key" data-key="06" data-note="r"></li>
+                <li class="piano-keys black-key" data-key="07" data-note="5"></li>
+                <li class="piano-keys white-key" data-key="08" data-note="t"></li>
+                <li class="piano-keys black-key" data-key="09" data-note="6"></li>
+                <li class="piano-keys white-key" data-key="10" data-note="y"></li>
+                <li class="piano-keys black-key" data-key="11" data-note="7"></li>
+                <li class="piano-keys white-key" data-key="12" data-note="u"></li>
+                <li class="piano-keys white-key" data-key="13" data-note="i"></li>
+                <li class="piano-keys black-key" data-key="14" data-note="9"></li>
                 <li class="piano-keys white-key" data-key="15" data-note="d5"></li>
                 <li class="piano-keys black-key" data-key="16" data-note="d#5"></li>
                 <li class="piano-keys white-key" data-key="17" data-note="e5"></li>

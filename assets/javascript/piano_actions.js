@@ -7,25 +7,24 @@ let recordedSequence = [];
 
 // Map {key : sound}
 const keyMapping = {
-    'a': 'c4',
-    's': 'c4',
-    'd': 'd',
-    'f': 'd#',
-    'g': 'e',
-    'h': 'f',
-    'j': 'f#',
-    'k': 'g',
-    'l': 'g#',
-    ';': 'a',
-    '4': 'a#',
-    '5': 'b',
-    '6': 'c5',
+    'q': 'A2',
+    '2': 'A#2',
+    'w': 'd',
+    '3': 'd#',
+    'e': 'e',
+    'r': 'f',
+    '5': 'f#',
+    't': 'g',
+    '6': 'g#',
+    'y': 'a',
+    '7': 'a#',
+    'u': 'b'
 };
 
 // Play the sound for a given key
 function playSound(key) {
-
-    if (keyMapping[key]) {
+    console.log(key, keyMapping[key])
+    if (keyMapping[key]) { 
         pianoSound.src = `./assets/music_sounds/${keyMapping[key]}.mp3`;
         pianoSound.play();
     }
@@ -48,6 +47,7 @@ keys.forEach((key) => {
 document.addEventListener('keydown', (e) => { 
     const keyPressed = e.key.toLowerCase(); 
     //console.log(`Key pressed: ${keyPressed}`);
+    console.log(keyPressed)
     playSound(keyPressed);  
 });
 
