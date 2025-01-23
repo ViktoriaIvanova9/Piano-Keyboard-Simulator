@@ -16,7 +16,7 @@ require "./includes/form_handlers/login_handler.php";
 </head>
 <body>
     <!-- <h1>
-        Welcome to Piano Keyboard!
+        Welcome to Piano Keyboard!<br>
     </h1> -->
     <div class="container">
 

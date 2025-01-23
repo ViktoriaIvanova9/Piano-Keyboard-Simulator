@@ -12,6 +12,10 @@
 
 <body>
     <div class="container">
+        <div class="controls">
+            <button id="record-btn">Start Recording</button>
+            <button id="play-btn" disabled>Play Recording</button>
+        </div>
         <div class="piano-container">
             <ul class="piano-keys-list">
                 <li class="piano-keys white-key" data-key="01" data-note="q"></li>
@@ -52,10 +56,6 @@
                 <li class="piano-keys white-key" data-key="36" data-note="b6"></li>
             </ul>
         </div>
-    <div class="controls">
-        <button id="record-btn">Start Recording</button>
-        <button id="play-btn" disabled>Play Recording</button>
-     </div>
     </div>
 </body>
 

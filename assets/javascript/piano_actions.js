@@ -7,18 +7,18 @@ let recordedSequence = [];
 
 // Map {key : sound}
 const keyMapping = {
-    'q': 'A2',
-    '2': 'A#2',
-    'w': 'd',
-    '3': 'd#',
-    'e': 'e',
-    'r': 'f',
-    '5': 'f#',
-    't': 'g',
-    '6': 'g#',
-    'y': 'a',
-    '7': 'a#',
-    'u': 'b'
+    'q': 'C2',
+    '2': 'Csharp2',
+    'w': 'D2',
+    '3': 'Dsharp2',
+    'e': 'E2',
+    'r': 'F2',
+    '5': 'Fsharp2',
+    't': 'G2',
+    '6': 'Gsharp2',
+    'y': 'A2',
+    '7': 'Asharp2',
+    'u': 'B2'
 };
 
 // Play the sound for a given key

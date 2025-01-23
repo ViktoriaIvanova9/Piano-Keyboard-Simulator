@@ -1,16 +1,11 @@
-/* @import url(
-'https://fonts.googleapis.com/css2?family=Poppins&amp;display=swap'); */
-
 body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* font-family: &quot;Poppins&quot;, sans-serif; */
 }
 
 .container {
-    background-image: 
-          linear-gradient(90deg, #9331d4, rgb(239 5 92 / 70%));
+    background-image: linear-gradient(90deg, black, white);
     height: 100vh;
     width: 100%;
     display: flex;
