@@ -4,6 +4,7 @@ const recordBtn = document.getElementById('record-btn');
 const playBtn = document.getElementById('play-btn');
 let isRecording = false;
 let recordedSequence = [];
+let lastTimestamp = null;
 
 // Map {key : sound}
 const keyMapping = {
@@ -30,8 +31,10 @@ function playSound(key) {
     }
 
     if (isRecording) {
-        console.log(key)
-        recordedSequence.push(key);
+        const currentTimestamp = Date.now();
+        const delay = lastTimestamp ? currentTimestamp - lastTimestamp : 0;
+        recordedSequence.push({ note: key, delay });
+        lastTimestamp = currentTimestamp;
     }
 }
 
@@ -68,13 +71,18 @@ recordBtn.addEventListener('click', () => {
 
 //plays the just played sequence 
 playBtn.addEventListener('click', () => {
-    console.log('Playing back sequence:', recordedSequence);
-    let delay = 0;
 
-    recordedSequence.forEach((note) => {
-        setTimeout(() => {
-            playSound(note);
-        }, delay);
-        delay += 500;
+    let totalDelay = 0; 
+    recordedSequence.forEach(({ note, delay }, index) => {
+        if (index === 0) {
+            setTimeout(() => {
+                playSound(note);
+            }, 0); 
+        } else {
+            totalDelay += delay; 
+            setTimeout(() => {
+                playSound(note);
+            }, totalDelay);
+        }
     });
 });
