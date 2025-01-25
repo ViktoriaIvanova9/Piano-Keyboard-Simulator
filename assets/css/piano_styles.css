@@ -2,6 +2,7 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
 .container {
@@ -12,27 +13,65 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    color: white;
 }
 
 .piano-container {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    background-color: #222;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    padding-right: 15rem;
 }
 
 .piano-keys-list {
     list-style: none;
     display: flex;
     justify-content: center;
+    position: relative;
 }
 
 .piano-keys {
     width: 60px;
-    cursor: pointer;
+    height: 20rem;
     position: relative;
     height: 20rem;
-    border-radius: 10px;
+    border-radius: 3px;
     border: 1px solid #000;
+    box-shadow: inset 0 -5px 10px rgba(0, 0, 0, 0.3);
+    margin: 0;
+    transition: transform 0.1s ease;
+}
+
+.piano-keys::after {
+    content: attr(data-note); 
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #333;
+    text-transform: uppercase;
+    pointer-events: none;
+}
+
+.black-key::after {
+    color: #fff;
+    bottom: 8px;
+}
+
+.piano-keys:active {
+    transform: translateY(2px);
+}
+
+.piano-keys.pressed {
+    transform: translateY(5px);
+    box-shadow: inset 0 -3px 5px rgba(0, 0, 0, 0.5);
 }
 
 .white-key {
@@ -42,12 +81,34 @@ body {
 .black-key {
     width: 35px;
     height: 13rem;
-    border-radius: 5px;
+    background-color: #000;
+    border-radius: 3px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    background-color: #000;
     z-index: 2;
-    margin: 0 -20px 0 -20px;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.6);
+    margin: 0 -17.5px;
+}
+
+.black-key:active {
+    background-color: #333;
+}
+
+.piano-keys.white-key + .piano-keys.black-key {
+    margin-left: -20px;
+}
+
+.piano-keys.white-key:not(:last-child) {
+    margin-right: 1px;
+}
+
+.moving-line {
+    position: absolute;
+    width: 35px; 
+    height: 2px;
+    background-image: linear-gradient(90deg, rgb(180, 61, 144), rgb(150, 18, 18));
+    animation: moveUp linear infinite;
+    border-radius: 8px;
 }
 
 @media screen and (min-width: 821px) and (max-width: 1024px) {
