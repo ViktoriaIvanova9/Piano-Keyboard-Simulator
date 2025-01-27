@@ -54,7 +54,7 @@
 // const activeSounds = {};
 
 // // Play the sound for a given key
-// function startSound(key) {
+// function playSound(key) {
 //     if (keyMapping[key] && !activeSounds[key]) {
 //         const sound = new Audio(`./assets/music_sounds/${keyMapping[key]}.mp3`);
 //         if (!usePedal) sound.loop = true; // Loop only if not using pedal
@@ -83,7 +83,7 @@
 // keys.forEach((key) => {
 //     key.addEventListener('mousedown', (e) => {
 //         const clickedKey = e.target.dataset.note;
-//         startSound(clickedKey);
+//         playSound(clickedKey);
 //     });
 
 //     key.addEventListener('mouseup', (e) => {
@@ -94,7 +94,7 @@
 
 // document.addEventListener('keydown', (e) => {
 //     const keyPressed = e.key.toLowerCase();
-//     startSound(keyPressed);
+//     playSound(keyPressed);
 // });
 
 // document.addEventListener('keyup', (e) => {
@@ -130,7 +130,7 @@
 //     recordedSequence.forEach(({ note, delay }, index) => {
 //         totalDelay += delay;
 //         setTimeout(() => {
-//             startSound(note);
+//             playSound(note);
 //             setTimeout(() => stopSound(note), 500); // Stop sound after 500ms for each note
 //         }, totalDelay);
 //     });
@@ -190,15 +190,18 @@ const keyMapping = {
 const activeSounds = {};
 const activeLines = {};
 
-function startSound(key) {
+
+// Play the sound for a given key
+function playSound(key) {
     if (keyMapping[key]) {
         if (usePedal) {
             for (const playingKey in activeSounds) {
                 stopSound(playingKey);
             }
         }
-
+        
         if (!activeSounds[key]) {
+            console.log(key)
             const sound = new Audio(`./assets/music_sounds/${keyMapping[key]}.mp3`);
             sound.loop = !usePedal;
             sound.play();
@@ -244,11 +247,11 @@ const createLine = (keyElement) => {
     return line;
 };
 
-
+// Mouse on piano keys to play sound
 keys.forEach((key) => {
     key.addEventListener('mousedown', (e) => {
         const clickedKey = e.target.dataset.note;
-        startSound(clickedKey);
+        playSound(clickedKey);
     });
 
     key.addEventListener('mouseup', (e) => {
@@ -261,9 +264,10 @@ keys.forEach((key) => {
 document.addEventListener('keydown', (e) => {
     const keyPressed = e.key.toLowerCase();
     const pianoKey = document.querySelector(`.piano-keys[data-note="${keyPressed}"]`);
+    console.log(pianoKey)
     if (pianoKey) {
         pianoKey.classList.add('pressed');
-        startSound(keyPressed);
+        playSound(keyPressed);
     }
 
     const line = createLine(pianoKey);
@@ -284,12 +288,12 @@ document.addEventListener('keyup', (e) => {
     }
 });
 
-
 pedalBtn.addEventListener('click', () => {
     usePedal = !usePedal;
     pedalBtn.textContent = usePedal ? 'Stop pedal' : 'Start pedal';
 });
 
+//checks if isRecording and changes the button to the respectful state
 recordBtn.addEventListener('click', () => {
     isRecording = !isRecording;
     if (isRecording) {
@@ -301,17 +305,139 @@ recordBtn.addEventListener('click', () => {
         recordBtn.textContent = 'Start Recording';
         playBtn.disabled = false;
         console.log('Recording stopped. Sequence:', recordedSequence);
+        
     }
 });
 
+//plays the just played sequence 
 playBtn.addEventListener('click', () => {
     let totalDelay = 0;
     recordedSequence.forEach(({ note, delay }, index) => {
-        totalDelay += delay;
-        setTimeout(() => {
-            startSound(note);
-            setTimeout(() => stopSound(note), 500);
-        }, totalDelay);
+        if (index === 0) {
+            setTimeout(() => {
+                playSound(note);
+                activeSounds[note].loop = false;
+            }, 0); 
+        } else {
+            totalDelay += delay; 
+            setTimeout(() => {  
+                playSound(note);
+
+                activeSounds[note].loop = false;
+                setTimeout(() => {
+                    stopSound(note);
+                }, delay);
+
+            }, totalDelay);
+        }
     });
+    setTimeout(() => {
+        for (const key in activeSounds) {
+            stopSound(key);
+        }
+    }, totalDelay + 1000); // Ensure extra time for the last note
 });
+
+
+function exportSequence() {
+    console.log("Recorded Sequence:", recordedSequence);  // Debugging line
+
+    if (recordedSequence.length === 0) {
+        alert('No sequence recorded yet.');
+        return; // Avoid downloading if there's no data
+    }
+
+    const data = JSON.stringify(recordedSequence, null, 2); 
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'recorded_sequence.json';
+    link.click();
+
+    URL.revokeObjectURL(url);
+
+    // Show confirmation to the user
+    const message = document.createElement('div');
+    message.classList.add('download-message');
+    message.textContent = 'Download started!';
+    document.body.appendChild(message);
+
+    // Remove the message after 2 seconds
+    setTimeout(() => {
+        message.remove();
+    }, 2000);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const downloadBtn = document.getElementById('download-btn');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', exportSequence);
+    }
+});
+
+
+const importFileInput = document.getElementById('import-file');
+let importedSequence = [];  // Declare here to use within the scope
+
+importFileInput.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            try {
+                // Parse the JSON content from the file
+                importedSequence = JSON.parse(e.target.result);
+                console.log('Imported Sequence:', importedSequence);
+                
+                // Enable the play button now that we have the sequence
+                const playImportedBtn = document.getElementById('play-imported-btn');
+                playImportedBtn.disabled = false;  // Enable it after the sequence is loaded
+            } catch (error) {
+                console.error('Error parsing the file:', error);
+            }
+        };
+        reader.readAsText(file);
+    }
+});
+
+const playImportedBtn = document.getElementById('play-imported-btn');
+playImportedBtn.addEventListener('click', () => {
+    if (importedSequence && importedSequence.length > 0) {
+        playImportedSequence(importedSequence);
+    } else {
+        console.log('No imported sequence to play.');
+    }
+});
+
+
+// Function to play the imported sequence
+function playImportedSequence(sequence) {
+    let totalDelay = 0;
+    sequence.forEach(({ note, delay }, index) => {
+        if (index === 0) {
+            setTimeout(() => {
+                playSound(note);
+                activeSounds[note].loop = false;
+            }, 0);
+        } else {
+            totalDelay += delay;
+            setTimeout(() => {
+                playSound(note);
+                activeSounds[note].loop = false;
+                setTimeout(() => {
+                    stopSound(note);
+                }, delay);
+            }, totalDelay);
+        }
+    });
+
+    // Stop all sounds after the sequence is finished
+    setTimeout(() => {
+        for (const key in activeSounds) {
+            stopSound(key);
+        }
+    }, totalDelay + 1000); // Ensure extra time for the last note
+}
 

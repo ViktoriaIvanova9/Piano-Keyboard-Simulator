@@ -14,10 +14,11 @@
     <div class="container">
         <div class="controls">
             <button id="record-btn">Start Recording</button>
-
             <button id="play-btn" disabled>Play Recording</button>
+            <button id="download-btn">Download Recorded Sequence</button>
+            <button id="play-imported-btn">Play Imported Song</button>
+            <input type="file" id="import-file" accept=".json">
             <button id="pedal-btn">Start pedal</button>
-
             <button id="show-keys">Show Keys</button>
         </div>
         <div class="piano-container">
