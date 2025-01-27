@@ -1,149 +1,14 @@
-// const keys = document.querySelectorAll('.piano-keys');
-// const recordBtn = document.getElementById('record-btn');
-// const playBtn = document.getElementById('play-btn');
-// const pedalBtn = document.getElementById('pedal-btn');
-// let isRecording = false;
-// let usePedal = false; // Determines whether to use the "pedal" mode
-// let recordedSequence = [];
-// let lastTimestamp = null;
-
-// // Map {key : sound}
-// const keyMapping = {
-//     'q': 'C2',
-//     '2': 'Csharp2',
-//     'w': 'D2',
-//     '3': 'Dsharp2',
-//     'e': 'E2',
-//     'r': 'F2',
-//     '5': 'Fsharp2',
-//     't': 'G2',
-//     '6': 'Gsharp2',
-//     'y': 'A2',
-//     '7': 'Asharp2',
-//     'u': 'B2',
-
-//     'i': 'C3',
-//     '9': 'Csharp3',
-//     'o': 'D3',
-//     '0': 'Dsharp3',
-//     'p': 'E3',
-//     '[': 'F3',
-//     'a': 'Fsharp3',
-//     'z': 'G3',
-//     's': 'Gsharp3',
-//     'x': 'A3',
-//     'd': 'Asharp3',
-//     'c': 'B3',
-    
-//     'v': 'C4',
-//     'g': 'Csharp4',
-//     'b': 'D4',
-//     'h': 'Dsharp4',
-//     'n': 'E4',
-//     'm': 'F4',
-//     'k': 'Fsharp4',
-//     ',': 'G4',
-//     'l': 'Gsharp4',
-//     '.': 'A4',
-//     ';': 'Asharp4',
-//     '/': 'B4',
-// };
-
-
-// // Store currently playing sounds to stop them on keyup
-// const activeSounds = {};
-
-// // Play the sound for a given key
-// function playSound(key) {
-//     if (keyMapping[key] && !activeSounds[key]) {
-//         const sound = new Audio(`./assets/music_sounds/${keyMapping[key]}.mp3`);
-//         if (!usePedal) sound.loop = true; // Loop only if not using pedal
-//         sound.play();
-//         activeSounds[key] = sound;
-
-//         if (isRecording) {
-//             const currentTimestamp = Date.now();
-//             const delay = lastTimestamp ? currentTimestamp - lastTimestamp : 0;
-//             recordedSequence.push({ note: key, delay });
-//             lastTimestamp = currentTimestamp;
-//         }
-//     }
-// }
-
-// // Stop the sound for a given key
-// function stopSound(key) {
-//     if (activeSounds[key]) {
-//         activeSounds[key].pause();
-//         activeSounds[key].currentTime = 0; // Reset sound to the beginning
-//         delete activeSounds[key];
-//     }
-// }
-
-// // Mouse on piano keys to play sound
-// keys.forEach((key) => {
-//     key.addEventListener('mousedown', (e) => {
-//         const clickedKey = e.target.dataset.note;
-//         playSound(clickedKey);
-//     });
-
-//     key.addEventListener('mouseup', (e) => {
-//         const clickedKey = e.target.dataset.note;
-//         if (!usePedal) stopSound(clickedKey);
-//     });
-// });
-
-// document.addEventListener('keydown', (e) => {
-//     const keyPressed = e.key.toLowerCase();
-//     playSound(keyPressed);
-// });
-
-// document.addEventListener('keyup', (e) => {
-//     const keyReleased = e.key.toLowerCase();
-//     if (!usePedal) stopSound(keyReleased);
-// });
-
-// // Toggle pedal functionality
-// pedalBtn.addEventListener('click', () => {
-//     usePedal = !usePedal;
-//     pedalBtn.textContent = usePedal ? 'Pedal On' : 'Pedal Off';
-//     console.log(`Pedal is now ${usePedal ? 'On' : 'Off'}`);
-// });
-
-// // Toggle recording state
-// recordBtn.addEventListener('click', () => {
-//     isRecording = !isRecording;
-//     if (isRecording) {
-//         recordedSequence = [];
-//         recordBtn.textContent = 'End Recording';
-//         playBtn.disabled = true;
-//         console.log('Recording started...');
-//     } else {
-//         recordBtn.textContent = 'Start Recording';
-//         playBtn.disabled = false;
-//         console.log('Recording stopped. Sequence:', recordedSequence);
-//     }
-// });
-
-// // Play the recorded sequence
-// playBtn.addEventListener('click', () => {
-//     let totalDelay = 0;
-//     recordedSequence.forEach(({ note, delay }, index) => {
-//         totalDelay += delay;
-//         setTimeout(() => {
-//             playSound(note);
-//             setTimeout(() => stopSound(note), 500); // Stop sound after 500ms for each note
-//         }, totalDelay);
-//     });
-// });
-
 const keys = document.querySelectorAll('.piano-keys');
 const recordBtn = document.getElementById('record-btn');
 const playBtn = document.getElementById('play-btn');
 const pedalBtn = document.getElementById('pedal-btn');
+const showKeysBtn = document.getElementById('show-keys');
+
 let isRecording = false;
 let usePedal = false;
 let recordedSequence = [];
 let lastTimestamp = null;
+let showKeys = false;
 
 // Map {key : sound}
 const keyMapping = {
@@ -190,7 +55,6 @@ const keyMapping = {
 const activeSounds = {};
 const activeLines = {};
 
-
 // Play the sound for a given key
 function playSound(key) {
     if (keyMapping[key]) {
@@ -232,13 +96,13 @@ const createLine = (keyElement) => {
 
     const rect = keyElement.getBoundingClientRect();
     const containerRect = document.querySelector('.container').getBoundingClientRect();
-    line.style.left = `${rect.left - containerRect.left + rect.width / 2 - 20}px`;
-    line.style.bottom = '600px';
+    line.style.left = `${rect.left - containerRect.left + rect.width / 2 - 15}px`;
+    line.style.bottom = '400px';
 
     const animateLine = () => {
         const currentBottom = parseInt(line.style.bottom, 10);
         if (currentBottom < containerRect.height) {
-            line.style.bottom = `${currentBottom + 1}px`;
+            line.style.bottom = `${currentBottom + 2}px`;
             requestAnimationFrame(animateLine);
         }
     };
@@ -246,6 +110,17 @@ const createLine = (keyElement) => {
     animateLine();
     return line;
 };
+
+showKeysBtn.addEventListener("click", () => {
+    showKeys = !showKeys;
+
+    const pianoKeys = document.querySelectorAll(".piano-keys");
+    pianoKeys.forEach(key => {
+        key.style.setProperty("--key-label-visibility", showKeys ? "visible" : "hidden");
+    });
+
+    showKeysButton.querySelector(".dot").style.backgroundColor = showKeys ? "green" : "white";
+});
 
 // Mouse on piano keys to play sound
 keys.forEach((key) => {
@@ -290,7 +165,7 @@ document.addEventListener('keyup', (e) => {
 
 pedalBtn.addEventListener('click', () => {
     usePedal = !usePedal;
-    pedalBtn.textContent = usePedal ? 'Stop pedal' : 'Start pedal';
+    // pedalBtn.textContent = usePedal ? 'Stop pedal' : 'Start pedal';
 });
 
 //checks if isRecording and changes the button to the respectful state
@@ -298,14 +173,11 @@ recordBtn.addEventListener('click', () => {
     isRecording = !isRecording;
     if (isRecording) {
         recordedSequence = [];
-        recordBtn.textContent = 'End Recording';
         playBtn.disabled = true;
         console.log('Recording started...');
     } else {
-        recordBtn.textContent = 'Start Recording';
         playBtn.disabled = false;
         console.log('Recording stopped. Sequence:', recordedSequence);
-        
     }
 });
 
@@ -439,5 +311,10 @@ function playImportedSequence(sequence) {
             stopSound(key);
         }
     }, totalDelay + 1000); // Ensure extra time for the last note
+}
+
+// BUTTONS ACTIONS
+function toggle(button) {
+    button.classList.toggle('active');
 }
 

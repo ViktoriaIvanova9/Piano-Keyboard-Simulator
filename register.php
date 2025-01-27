@@ -17,9 +17,6 @@ require "./includes/form_handlers/login_handler.php";
 <body>
     <div class="container">
         <div class="form-section">
-            <!-- <div class="logo">
-                <img src="./assets/images/logo4.jpg" alt="Logo" style="width: 50px; background-color: rgba(0, 0, 0, 0.85);">
-            </div> -->
             <h1>Welcome to Pianissimo</h1>
             <p>Login to your account to learn and compose music.</p>
             <div class="tabs">
@@ -43,7 +40,7 @@ require "./includes/form_handlers/login_handler.php";
                     ?>" required>
                     <br>
 
-                    <button type="login" name="login_button">Вход</button>
+                    <button type="login" name="login_button">Log in</button>
                 </form>
 
                 <!-- Register form -->
@@ -86,7 +83,7 @@ require "./includes/form_handlers/login_handler.php";
                     <?php if(in_array("Email already in use!", $error_msgs)) echo "Email already in use!"; ?>
                     <br>
 
-                    <button type="register" name="register_button">Регистрирай ме!</button>
+                    <button type="register" name="register_button">Register</button>
                 </form>
             </div>
         </div>

@@ -12,16 +12,31 @@
 
 <body>
     <div class="container">
-        <div class="controls">
-            <button id="record-btn">Start Recording</button>
-            <button id="play-btn" disabled>Play Recording</button>
-            <button id="download-btn">Download Recorded Sequence</button>
-            <button id="play-imported-btn">Play Imported Song</button>
-            <input type="file" id="import-file" accept=".json">
-            <button id="pedal-btn">Start pedal</button>
-            <button id="show-keys">Show Keys</button>
-        </div>
         <div class="piano-container">
+            <div class="button-wrapper-one">
+                <div class="button-label">RECORD</div>
+                <button id="record-btn" onclick="toggle(this)">
+                    <div class="dot"></div>
+                </button>
+                <div class="button-label">PLAY</div>
+                <button id="play-btn" onclick="toggle(this)">
+                    <div class="dot"></div>
+                </button>
+            </div>
+            <div class="button-wrapper-two">
+                <div class="button-label">DOWNLOAD</div>
+                <button id="download-btn" onclick="toggle(this)">
+                    <div class="dot"></div>
+                </button>
+                <div class="button-label">SONG</div>
+                <button id="play-imported-btn" onclick="toggle(this)">
+                    <div class="dot"></div>
+                </button>
+
+            </div>
+            <!-- <div class="input-container">
+                    <input type="file" id="import-file" accept=".json">
+            </div> -->
             <ul class="piano-keys-list">
                 <li class="piano-keys white-key" data-key="01" data-note="q"></li>
                 <li class="piano-keys black-key" data-key="02" data-note="2"></li>
@@ -62,6 +77,16 @@
                 <li class="piano-keys black-key" data-key="35" data-note=";"></li>
                 <li class="piano-keys white-key" data-key="36" data-note="/"></li>
             </ul>
+            <div class="button-wrapper-three">
+                <div class="button-label">PEDAL</div>
+                <button id="pedal-btn" onclick="toggle(this)">
+                    <div class="dot"></div>
+                </button>
+                <div class="button-label">KEYS</div>
+                <button id="show-keys" onclick="toggle(this)">
+                    <div class="dot"></div>
+                </button>
+            </div>
         </div>
     </div>
 </body>
