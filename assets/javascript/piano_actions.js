@@ -241,6 +241,7 @@ function getFileInput() {
     document.getElementById('import-file').click();
 }
 
+let importedSequence = []
 document.getElementById('import-file').addEventListener('change', (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -248,7 +249,7 @@ document.getElementById('import-file').addEventListener('change', (event) => {
         reader.onload = function (e) {
             try {
                 // Parse the JSON content from the file
-                let importedSequence = JSON.parse(e.target.result);
+                importedSequence = JSON.parse(e.target.result);
                 if (importedSequence && importedSequence.length > 0) {
                     playSequence(importedSequence);
                 }
