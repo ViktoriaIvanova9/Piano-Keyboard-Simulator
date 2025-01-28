@@ -73,7 +73,7 @@ function playSound(key) {
         
         if (!activeSounds[key]) {
             const sound = new Audio(`./assets/music_sounds/${keyMapping[key]}.mp3`);
-            //sound.loop = !usePedal;
+  
             sound.play();
             activeSounds[key] = sound;
 
@@ -218,13 +218,11 @@ function exportSequence() {
 
     URL.revokeObjectURL(url);
 
-    // Show confirmation to the user
     const message = document.createElement('div');
     message.classList.add('download-message');
     message.textContent = 'Download started!';
     document.body.appendChild(message);
 
-    // Remove the message after 2 seconds
     setTimeout(() => {
         message.remove();
     }, 2000);
@@ -248,7 +246,6 @@ document.getElementById('import-file').addEventListener('change', (event) => {
         const reader = new FileReader();
         reader.onload = function (e) {
             try {
-                // Parse the JSON content from the file
                 importedSequence = JSON.parse(e.target.result);
                 if (importedSequence && importedSequence.length > 0) {
                     playSequence(importedSequence);
@@ -282,7 +279,7 @@ function playSequence(sequence) {
             totalDelay += delay;
             setTimeout(() => {
                 if (!usePedal) {
-                    stopAllSounds(); // Stop all previous sounds if the pedal is not used
+                    stopAllSounds(); 
                 }
                 playSound(note);
                 activeSounds[note].loop = false;
@@ -293,10 +290,9 @@ function playSequence(sequence) {
         }
     });
 
-    // Stop all sounds after the sequence is finished
     setTimeout(() => {
         stopAllSounds()
-    }, totalDelay + 1000); // Ensure extra time for the last note
+    }, totalDelay + 1000);
 }
 
 
