@@ -16,6 +16,7 @@ body {
     justify-content: flex-start;
     color: white;
     padding-top: 50px;
+    flex-wrap: wrap;    
 }
 
 .navigation {
