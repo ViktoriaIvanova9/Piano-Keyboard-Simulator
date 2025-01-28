@@ -6,7 +6,6 @@ if(isset($_POST["login_button"]))
     $password = md5($_POST['login_password']);
 
     $_SESSION["login_username"] = $username;
-    $_SESSION["login_password"] = $password;
     
     $check_database_query = mysqli_query($db_connection, "SELECT * FROM users WHERE username='$username'");
     $check_login_query = mysqli_num_rows($check_database_query);

@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['login_username'])) {
+    header("Location: register.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
