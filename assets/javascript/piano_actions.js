@@ -255,6 +255,13 @@ playImportedBtn.addEventListener('click', () => {
     }
 });
 
+
+function stopAllSounds() {
+    for (const key in activeSounds) {
+        stopSound(key);
+    }
+}
+
 // Function to play the imported sequence
 function playSequence(sequence) {
     let totalDelay = 0;
@@ -267,6 +274,9 @@ function playSequence(sequence) {
         } else {
             totalDelay += delay;
             setTimeout(() => {
+                if (!usePedal) {
+                    stopAllSounds(); // Stop all previous sounds if the pedal is not used
+                }
                 playSound(note);
                 activeSounds[note].loop = false;
                 setTimeout(() => {
@@ -283,6 +293,7 @@ function playSequence(sequence) {
         }
     }, totalDelay + 1000); // Ensure extra time for the last note
 }
+
 
 // BUTTONS ACTIONS
 function toggle(button) {
