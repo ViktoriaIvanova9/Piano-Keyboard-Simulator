@@ -1,7 +1,8 @@
 <?php
-require "./config/config.php";
-require "./includes/form_handlers/register_handler.php";
-require "./includes/form_handlers/login_handler.php";
+include("./config/config.php");
+include("./includes/form_handlers/register_handler.php");
+include("./includes/form_handlers/login_handler.php");
+
 ?>
 
 <!DOCTYPE html>
@@ -62,12 +63,14 @@ require "./includes/form_handlers/login_handler.php";
                         echo $_SESSION["user_name"];
                     }
                     ?>" required>
+                    <?php if(in_array("Username already in use!", $error_msgs)) echo "Username already in use!<br>";?>
 
                     <input type="password" name="password" placeholder="password" value="<?php
                     if(isset($_SESSION["password"])) {
                         echo $_SESSION["password"];
                     }
                     ?>" required>
+                    <?php if(in_array("Passwords does not match!", $error_msgs)) echo "Passwords does not match!<br>";?>
 
                     <input type="password" name="confirm_pass" placeholder="password" value="<?php
                     if(isset($_SESSION["confirm_pass"])) {
@@ -80,7 +83,10 @@ require "./includes/form_handlers/login_handler.php";
                         echo $_SESSION["email_address"];
                     }
                     ?>" required>
-                    <?php if(in_array("Email already in use!", $error_msgs)) echo "Email already in use!"; ?>
+                    <?php if(in_array("Email already in use!", $error_msgs)) 
+                            echo "Email already in use!<br>"; 
+                          else if(in_array("Invalid email!", $error_msgs))
+                            echo "Invalid email!<br>"?>
                     <br>
 
                     <button type="register" name="register_button">Register</button>

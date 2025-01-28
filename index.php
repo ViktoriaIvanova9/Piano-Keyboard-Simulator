@@ -7,11 +7,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Piano-Keyboard-Simulator</title>
     <link rel="stylesheet" type="text/css" href="./assets/css/piano_styles.css?v=1.0">
+    <link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css">
     <script src="./assets/javascript/piano_actions.js?v=1.0" defer></script>
 </head>
 
 <body>
     <div class="container">
+        <div class="navigation">
+            <a href="includes/handlers/logout.php" class="logout-link">
+                <i class="icon-signout icon-3x"></i>
+                <span>Log out</span>
+            </a>
+        </div>
         <div class="piano-container">
             <div class="button-wrapper-one">
                 <div class="button-label">RECORD</div>

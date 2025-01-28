@@ -39,13 +39,20 @@ if(isset($_POST["register_button"]))
     $email = str_replace(" ", "", $email);
     $_SESSION["email_address"] = $email;
 
-    // Valaidate name
-
-    // Validate surname
 
     // Validate username
+    $username_exists_check = mysqli_query($db_connection, "SELECT username FROM users WHERE username='$username'");
+    $num_same_username_rows = mysqli_num_rows($username_exists_check);
+    if($num_same_username_rows > 0)
+    {
+        array_push($error_msgs, "Username already in use!");
+    }
 
     // Validate password
+    if($password != $password_confirm)
+    {
+        array_push($error_msgs, "Passwords does not match!");
+    }
 
     // Validate email
     if(filter_var($email, FILTER_VALIDATE_EMAIL))
@@ -76,7 +83,9 @@ if(isset($_POST["register_button"]))
         $_SESSION["password"] = "";
         $_SESSION["confirm_pass"] = "";
         $_SESSION["email_address"] = "";
+
     }
+
 }
 
 ?>

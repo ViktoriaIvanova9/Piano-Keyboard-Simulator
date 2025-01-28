@@ -65,7 +65,6 @@ function playSound(key) {
         }
         
         if (!activeSounds[key]) {
-            console.log(key)
             const sound = new Audio(`./assets/music_sounds/${keyMapping[key]}.mp3`);
             sound.loop = !usePedal;
             sound.play();
@@ -90,25 +89,28 @@ function stopSound(key) {
 }
 
 const createLine = (keyElement) => {
-    const line = document.createElement('div');
-    line.classList.add('moving-line');
-    document.querySelector('.container').appendChild(line);
+        const line = document.createElement('div');
+        line.classList.add('moving-line');
+        document.querySelector('.container').appendChild(line);
 
-    const rect = keyElement.getBoundingClientRect();
-    const containerRect = document.querySelector('.container').getBoundingClientRect();
-    line.style.left = `${rect.left - containerRect.left + rect.width / 2 - 15}px`;
-    line.style.bottom = '400px';
+        const rect = keyElement.getBoundingClientRect();
+        const containerRect = document.querySelector('.container').getBoundingClientRect();
+        line.style.left = `${rect.left - containerRect.left + rect.width / 2 - 15}px`;
+        line.style.bottom = `400px`;
 
-    const animateLine = () => {
-        const currentBottom = parseInt(line.style.bottom, 10);
-        if (currentBottom < containerRect.height) {
-            line.style.bottom = `${currentBottom + 2}px`;
-            requestAnimationFrame(animateLine);
-        }
-    };
-
-    animateLine();
-    return line;
+            const animateLine = () => {
+                const currentBottom = parseInt(line.style.bottom, 10);
+                if (currentBottom < containerRect.height) {
+                    line.style.bottom = `${currentBottom + 2}px`;
+                    requestAnimationFrame(animateLine);
+                }
+                else {
+                    line.remove();
+                }
+            };
+            
+        animateLine();
+        return line;
 };
 
 showKeysBtn.addEventListener("click", () => {
@@ -139,14 +141,14 @@ keys.forEach((key) => {
 document.addEventListener('keydown', (e) => {
     const keyPressed = e.key.toLowerCase();
     const pianoKey = document.querySelector(`.piano-keys[data-note="${keyPressed}"]`);
-    console.log(pianoKey)
     if (pianoKey) {
         pianoKey.classList.add('pressed');
         playSound(keyPressed);
+
+        const line = createLine(pianoKey);
+        activeLines[keyPressed] = line;
     }
 
-    const line = createLine(pianoKey);
-    activeLines[keyPressed] = line;
 });
 
 document.addEventListener('keyup', (e) => {
@@ -174,10 +176,8 @@ recordBtn.addEventListener('click', () => {
     if (isRecording) {
         recordedSequence = [];
         playBtn.disabled = true;
-        console.log('Recording started...');
     } else {
         playBtn.disabled = false;
-        console.log('Recording stopped. Sequence:', recordedSequence);
     }
 });
 
@@ -212,8 +212,6 @@ playBtn.addEventListener('click', () => {
 
 
 function exportSequence() {
-    console.log("Recorded Sequence:", recordedSequence);  // Debugging line
-
     if (recordedSequence.length === 0) {
         alert('No sequence recorded yet.');
         return; // Avoid downloading if there's no data
@@ -261,7 +259,6 @@ importFileInput.addEventListener('change', (event) => {
             try {
                 // Parse the JSON content from the file
                 importedSequence = JSON.parse(e.target.result);
-                console.log('Imported Sequence:', importedSequence);
                 
                 // Enable the play button now that we have the sequence
                 const playImportedBtn = document.getElementById('play-imported-btn');
@@ -278,8 +275,6 @@ const playImportedBtn = document.getElementById('play-imported-btn');
 playImportedBtn.addEventListener('click', () => {
     if (importedSequence && importedSequence.length > 0) {
         playImportedSequence(importedSequence);
-    } else {
-        console.log('No imported sequence to play.');
     }
 });
 
