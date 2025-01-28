@@ -7,7 +7,7 @@ const showKeysBtn = document.getElementById('show-keys');
 let isRecording = false;
 let usePedal = false;
 let recordedSequence = [];
-let lastTimestamp = null;
+let lastTimeStamp = null;
 let showKeys = false;
 
 // Map {key : sound}
@@ -56,6 +56,13 @@ const activeSounds = {};
 const activeLines = {};
 
 // Play the sound for a given key
+//for a given key, we check if its in the map as a key value
+//if using the pedal, it stops the currently playing sounds
+//if the key is not present in the activeSounds, we create a new Audio instance
+//play the sound with the respective key
+//add the sound to the activeSounds, so sounds don't overlap when the pedal is pressed
+//if isRecording get the delay(time between keys played)
+//add the pair of {key, delay} for each key played in the 'recordedSequence', update the lastTimeStamp
 function playSound(key) {
     if (keyMapping[key]) {
         if (usePedal) {
@@ -66,20 +73,22 @@ function playSound(key) {
         
         if (!activeSounds[key]) {
             const sound = new Audio(`./assets/music_sounds/${keyMapping[key]}.mp3`);
-            sound.loop = !usePedal;
+            //sound.loop = !usePedal;
             sound.play();
             activeSounds[key] = sound;
 
             if (isRecording) {
                 const currentTimestamp = Date.now();
-                const delay = lastTimestamp ? currentTimestamp - lastTimestamp : 0;
+                const delay = lastTimeStamp ? currentTimestamp - lastTimeStamp : 0;
                 recordedSequence.push({ note: key, delay });
-                lastTimestamp = currentTimestamp;
+                lastTimeStamp = currentTimestamp;
             }
         }
     }
 }
 
+//pauses the given sound from activeSounds if active
+//resets the playback to the start of the sound and then deletes it
 function stopSound(key) {
     if (activeSounds[key]) {
         activeSounds[key].pause();
@@ -124,7 +133,7 @@ showKeysBtn.addEventListener("click", () => {
     showKeysButton.querySelector(".dot").style.backgroundColor = showKeys ? "green" : "white";
 });
 
-// Mouse on piano keys to play sound
+// Mouse on piano keys to play sound 
 keys.forEach((key) => {
     key.addEventListener('mousedown', (e) => {
         const clickedKey = e.target.dataset.note;
@@ -137,7 +146,7 @@ keys.forEach((key) => {
     });
 });
 
-
+// convert the key pressed on the keyboard with 
 document.addEventListener('keydown', (e) => {
     const keyPressed = e.key.toLowerCase();
     const pianoKey = document.querySelector(`.piano-keys[data-note="${keyPressed}"]`);
@@ -165,12 +174,14 @@ document.addEventListener('keyup', (e) => {
     }
 });
 
+//toggles between on/off pedal
 pedalBtn.addEventListener('click', () => {
     usePedal = !usePedal;
-    // pedalBtn.textContent = usePedal ? 'Stop pedal' : 'Start pedal';
 });
 
 //checks if isRecording and changes the button to the respectful state
+//if isRecording clears the last saved 'recordedSequence' & turns the button "PLAY" to disabled
+//when clicked again, it stops recording and enables the "PLAY" button
 recordBtn.addEventListener('click', () => {
     isRecording = !isRecording;
     if (isRecording) {
@@ -255,14 +266,15 @@ playImportedBtn.addEventListener('click', () => {
     }
 });
 
-
+//iterates through all activeSounds and stops them
 function stopAllSounds() {
     for (const key in activeSounds) {
         stopSound(key);
     }
 }
 
-// Function to play the imported sequence
+//function to play the sequence
+//as input it takes a sequence
 function playSequence(sequence) {
     let totalDelay = 0;
     sequence.forEach(({ note, delay }, index) => {
@@ -288,9 +300,7 @@ function playSequence(sequence) {
 
     // Stop all sounds after the sequence is finished
     setTimeout(() => {
-        for (const key in activeSounds) {
-            stopSound(key);
-        }
+        stopAllSounds()
     }, totalDelay + 1000); // Ensure extra time for the last note
 }
 
