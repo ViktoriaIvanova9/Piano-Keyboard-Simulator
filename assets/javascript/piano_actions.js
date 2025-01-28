@@ -192,16 +192,19 @@ recordBtn.addEventListener('click', () => {
     }
 });
 
+//logic for button "PLAY", when pressed checks for a recordedSequence and plays it, if it's valid
 playBtn.addEventListener('click', () => {
     if (recordedSequence && recordedSequence.length > 0) {
         playSequence(recordedSequence);
     }
 });
 
+//here we check if the "recordedSequence" is valid(if it has any notes recorded inside it)
+//we convert the "recordedSequence" to a json string 
 function exportSequence() {
     if (recordedSequence.length === 0) {
         alert('No sequence recorded yet.');
-        return; // Avoid downloading if there's no data
+        return;
     }
 
     const data = JSON.stringify(recordedSequence, null, 2); 
@@ -238,8 +241,6 @@ function getFileInput() {
     document.getElementById('import-file').click();
 }
 
-let importedSequence = [];  // Declare here to use within the scope
-
 document.getElementById('import-file').addEventListener('change', (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -247,7 +248,7 @@ document.getElementById('import-file').addEventListener('change', (event) => {
         reader.onload = function (e) {
             try {
                 // Parse the JSON content from the file
-                importedSequence = JSON.parse(e.target.result);
+                let importedSequence = JSON.parse(e.target.result);
                 if (importedSequence && importedSequence.length > 0) {
                     playSequence(importedSequence);
                 }
@@ -256,13 +257,6 @@ document.getElementById('import-file').addEventListener('change', (event) => {
             }
         };
         reader.readAsText(file);
-    }
-});
-
-const playImportedBtn = document.getElementById('import-file');
-playImportedBtn.addEventListener('click', () => {
-    if (importedSequence && importedSequence.length > 0) {
-        playSequence(importedSequence);
     }
 });
 
@@ -305,7 +299,7 @@ function playSequence(sequence) {
 }
 
 
-// BUTTONS ACTIONS
+//lights up the button
 function toggle(button) {
     button.classList.toggle('active');
 }
