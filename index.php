@@ -36,14 +36,11 @@
                     <div class="dot"></div>
                 </button>
                 <div class="button-label">SONG</div>
-                <button id="play-imported-btn" onclick="toggle(this)">
-                    <div class="dot"></div>
+                <button id="play-imported-btn" onclick="getFileInput()">
+                    <div class="dot"></div> 
                 </button>
-
+                <input id="import-file" type="file" accept=".json"  style="display: none;">
             </div>
-            <!-- <div class="input-container">
-                    <input type="file" id="import-file" accept=".json">
-            </div> -->
             <ul class="piano-keys-list">
                 <li class="piano-keys white-key" data-key="01" data-note="q"></li>
                 <li class="piano-keys black-key" data-key="02" data-note="2"></li>

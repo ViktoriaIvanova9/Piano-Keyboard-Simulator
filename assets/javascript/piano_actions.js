@@ -181,35 +181,11 @@ recordBtn.addEventListener('click', () => {
     }
 });
 
-//plays the just played sequence 
 playBtn.addEventListener('click', () => {
-    let totalDelay = 0;
-    recordedSequence.forEach(({ note, delay }, index) => {
-        if (index === 0) {
-            setTimeout(() => {
-                playSound(note);
-                activeSounds[note].loop = false;
-            }, 0); 
-        } else {
-            totalDelay += delay; 
-            setTimeout(() => {  
-                playSound(note);
-
-                activeSounds[note].loop = false;
-                setTimeout(() => {
-                    stopSound(note);
-                }, delay);
-
-            }, totalDelay);
-        }
-    });
-    setTimeout(() => {
-        for (const key in activeSounds) {
-            stopSound(key);
-        }
-    }, totalDelay + 1000); // Ensure extra time for the last note
+    if (recordedSequence && recordedSequence.length > 0) {
+        playSequence(recordedSequence);
+    }
 });
-
 
 function exportSequence() {
     if (recordedSequence.length === 0) {
@@ -247,11 +223,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+function getFileInput() {
+    document.getElementById('import-file').click();
+}
 
-const importFileInput = document.getElementById('import-file');
 let importedSequence = [];  // Declare here to use within the scope
 
-importFileInput.addEventListener('change', (event) => {
+document.getElementById('import-file').addEventListener('change', (event) => {
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
@@ -259,10 +237,9 @@ importFileInput.addEventListener('change', (event) => {
             try {
                 // Parse the JSON content from the file
                 importedSequence = JSON.parse(e.target.result);
-                
-                // Enable the play button now that we have the sequence
-                const playImportedBtn = document.getElementById('play-imported-btn');
-                playImportedBtn.disabled = false;  // Enable it after the sequence is loaded
+                if (importedSequence && importedSequence.length > 0) {
+                    playSequence(importedSequence);
+                }
             } catch (error) {
                 console.error('Error parsing the file:', error);
             }
@@ -271,16 +248,15 @@ importFileInput.addEventListener('change', (event) => {
     }
 });
 
-const playImportedBtn = document.getElementById('play-imported-btn');
+const playImportedBtn = document.getElementById('import-file');
 playImportedBtn.addEventListener('click', () => {
     if (importedSequence && importedSequence.length > 0) {
-        playImportedSequence(importedSequence);
+        playSequence(importedSequence);
     }
 });
 
-
 // Function to play the imported sequence
-function playImportedSequence(sequence) {
+function playSequence(sequence) {
     let totalDelay = 0;
     sequence.forEach(({ note, delay }, index) => {
         if (index === 0) {
