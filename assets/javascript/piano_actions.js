@@ -97,29 +97,43 @@ function stopSound(key) {
     }
 }
 
+// creates line div element
+const createLineElement = () => {
+    const line = document.createElement('div');
+    line.classList.add('moving-line');
+    document.querySelector('.container').appendChild(line);
+    return line;
+};
+
+// calcs the position of the line
+const positionLine = (line, keyElement) => {
+    const rect = keyElement.getBoundingClientRect();
+    const containerRect = document.querySelector('.container').getBoundingClientRect();
+    line.style.left = `${rect.left - containerRect.left + rect.width / 2 - 15}px`;
+    line.style.bottom = `400px`;  
+};
+
+// moves the line
+const animateLine = (line) => {
+    const containerRect = document.querySelector('.container').getBoundingClientRect();
+    const animate = () => {
+        const currentBottom = parseInt(line.style.bottom, 10);
+        if (currentBottom < containerRect.height) {
+            line.style.bottom = `${currentBottom + 2}px`;
+            requestAnimationFrame(animate);
+        } else {
+            line.remove(); 
+        }
+    };
+    animate();
+};
+
+//given key, creates line, positions it, animates it
 const createLine = (keyElement) => {
-        const line = document.createElement('div');
-        line.classList.add('moving-line');
-        document.querySelector('.container').appendChild(line);
-
-        const rect = keyElement.getBoundingClientRect();
-        const containerRect = document.querySelector('.container').getBoundingClientRect();
-        line.style.left = `${rect.left - containerRect.left + rect.width / 2 - 15}px`;
-        line.style.bottom = `400px`;
-
-            const animateLine = () => {
-                const currentBottom = parseInt(line.style.bottom, 10);
-                if (currentBottom < containerRect.height) {
-                    line.style.bottom = `${currentBottom + 2}px`;
-                    requestAnimationFrame(animateLine);
-                }
-                else {
-                    line.remove();
-                }
-            };
-            
-        animateLine();
-        return line;
+    const line = createLineElement();
+    positionLine(line, keyElement);
+    animateLine(line);
+    return line;
 };
 
 showKeysBtn.addEventListener("click", () => {
@@ -129,8 +143,6 @@ showKeysBtn.addEventListener("click", () => {
     pianoKeys.forEach(key => {
         key.style.setProperty("--key-label-visibility", showKeys ? "visible" : "hidden");
     });
-
-    showKeysButton.querySelector(".dot").style.backgroundColor = showKeys ? "green" : "white";
 });
 
 // Mouse on piano keys to play sound 
@@ -146,7 +158,7 @@ keys.forEach((key) => {
     });
 });
 
-// convert the key pressed on the keyboard with 
+// convert the key pressed on the keyboard to a sound 
 document.addEventListener('keydown', (e) => {
     const keyPressed = e.key.toLowerCase();
     const pianoKey = document.querySelector(`.piano-keys[data-note="${keyPressed}"]`);
@@ -160,6 +172,7 @@ document.addEventListener('keydown', (e) => {
 
 });
 
+//checks if key is not pressed anymore
 document.addEventListener('keyup', (e) => {
     const keyReleased = e.key.toLowerCase();
     const pianoKey = document.querySelector(`.piano-keys[data-note="${keyReleased}"]`);
@@ -200,7 +213,8 @@ playBtn.addEventListener('click', () => {
 });
 
 //here we check if the "recordedSequence" is valid(if it has any notes recorded inside it)
-//we convert the "recordedSequence" to a json string 
+//we convert the "recordedSequence" to a json string, creates blob and temp url for it to be downloaded
+// create hyperlink from the url, 
 function exportSequence() {
     if (recordedSequence.length === 0) {
         alert('No sequence recorded yet.');
@@ -228,6 +242,7 @@ function exportSequence() {
     }, 2000);
 }
 
+//check if DOM is loaded and allows for download button
 document.addEventListener('DOMContentLoaded', () => {
     const downloadBtn = document.getElementById('download-btn');
     if (downloadBtn) {
@@ -235,10 +250,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+//triggers file input
 function getFileInput() {
     document.getElementById('import-file').click();
 }
 
+//listens for a event change and imports file
 let importedSequence = []
 document.getElementById('import-file').addEventListener('change', (event) => {
     const file = event.target.files[0];
