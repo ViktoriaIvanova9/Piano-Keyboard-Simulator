@@ -42,23 +42,6 @@ body {
     align-items: center;
 }
 
-.image-section img {
-    width: 90%;
-    height: auto;
-    border-radius: 10px;
-}
-
-.form-section h1 {
-    font-size: 2rem;
-    margin-bottom: 10px;
-}
-
-.form-section p {
-    font-size: 1rem;
-    margin-bottom: 20px;
-    color: #bbb;
-}
-
 .tabs {
     display: flex;
     justify-content: space-around;
@@ -114,25 +97,8 @@ body {
     background-color: #e63946;
     border: none;
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 
 .user-form button:hover {
     background-color: #ff4d6d;
-}
-
-.user-form .additional-options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 12px;
-}
-
-.user-form .additional-options a {
-    color: #e63946;
-    text-decoration: none;
-}
-
-.user-form .additional-options a:hover {
-    text-decoration: underline;
 }

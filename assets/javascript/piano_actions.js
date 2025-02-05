@@ -118,12 +118,8 @@ const animateLine = (line) => {
     const containerRect = document.querySelector('.container').getBoundingClientRect();
     const animate = () => {
         const currentBottom = parseInt(line.style.bottom, 10);
-        if (currentBottom < containerRect.height) {
-            line.style.bottom = `${currentBottom + 2}px`;
-            requestAnimationFrame(animate);
-        } else {
-            line.remove(); 
-        }
+        line.style.bottom = `${currentBottom + 2}px`;
+        requestAnimationFrame(animate);
     };
     animate();
 };
