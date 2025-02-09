@@ -1,6 +1,7 @@
 <?php
+header('Content-Type: application/json; charset=utf-8');
 session_start();
-include("./config/config.php");
+include(__DIR__ . "/../../config/config.php");
 
 // Enable error reporting for debugging
 ini_set('display_errors', 1);

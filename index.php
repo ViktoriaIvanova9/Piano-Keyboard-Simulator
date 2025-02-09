@@ -52,6 +52,7 @@ if (!isset($_SESSION['login_username'])) {
                 <button id="play-imported-btn" onclick="getFileInput()">
                     <div class="dot"></div> 
                 </button>
+                <input id="import-file" type="file" accept=".json"  style="display: none;">
                 <div class="button-label">SAVE</div>
                 <button id="dbsave-btn" onclick="saveSong()">
                     <div class="dot"></div>
