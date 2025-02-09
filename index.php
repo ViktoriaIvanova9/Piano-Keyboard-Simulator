@@ -38,6 +38,10 @@ if (!isset($_SESSION['login_username'])) {
                 <button id="play-btn" onclick="toggle(this)">
                     <div class="dot"></div>
                 </button>
+                <div class="button-label">MUSICBOOK</div>
+                <button id="musicbook-btn" onclick="fetchUserSongs()">
+                    <div class="dot"></div>
+                </button>
             </div>
             <div class="button-wrapper-two">
                 <div class="button-label">DOWNLOAD</div>
@@ -48,7 +52,11 @@ if (!isset($_SESSION['login_username'])) {
                 <button id="play-imported-btn" onclick="getFileInput()">
                     <div class="dot"></div> 
                 </button>
-                <input id="import-file" type="file" accept=".json"  style="display: none;">
+                <div class="button-label">SAVE</div>
+                <button id="dbsave-btn" onclick="saveSong()">
+                    <div class="dot"></div>
+                </button>
+                <!-- <input id="import-file" type="file" accept=".json"  style="display: none;"> -->
             </div>
             <ul class="piano-keys-list">
                 <li class="piano-keys white-key" data-key="01" data-note="q"></li>

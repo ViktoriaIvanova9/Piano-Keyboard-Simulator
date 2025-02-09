@@ -413,3 +413,32 @@ window.addEventListener('beforeunload', () => {
     }
 });
 
+// save the played song to the database based on the logged username
+function saveSong() {
+    if (recordedSequence.length === 0) {
+        alert('No sequence recorded yet.');
+        return;
+    }
+
+    const songData = JSON.stringify(recordedSequence);
+
+    fetch('./includes/handlers/save_song.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: songData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert('Song saved successfully');
+        } else {
+            alert('Failed to save song: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Request failed:', error);
+        alert('Failed to save song: Server error');
+    });
+}
