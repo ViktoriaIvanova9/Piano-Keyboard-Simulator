@@ -1,6 +1,5 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-session_start();
 include(__DIR__ . "/../../config/config.php");
 
 // Enable error reporting for debugging
@@ -22,45 +21,18 @@ if (!$db_connection) {
 
 // Check if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Get the raw POST data
-    $jsonData = file_get_contents('php://input');
+    $username = $_SESSION['login_username'];
+    $data = json_decode(file_get_contents('php://input'), true);
 
-    // Decode the JSON data
-    $songData = json_decode($jsonData, true);
+    if ($data && isset($data['songName']) && isset($data['songData'])) {
+        $songName = mysqli_real_escape_string($db_connection, $data['songName']);
+        $songData = mysqli_real_escape_string($db_connection, $data['songData']);
 
-    // Validate the JSON data
-    if (json_last_error() === JSON_ERROR_NONE && is_array($songData)) {
-        // Get the username from the session
-        $username = $_SESSION['login_username'];
-
-        // Encode the song data back to JSON for storage
-        $songJson = json_encode($songData);
-        
-        // Ensure encoding didn't fail
-        if ($songJson === false) {
-            echo json_encode(['status' => 'error', 'message' => 'JSON encoding error']);
-            exit();
-        }
-
-        // Prepare the SQL query
-        $query = "INSERT INTO songs_data (username, song_data) VALUES (?, ?)";
-        $stmt = mysqli_prepare($db_connection, $query);
-
-        if ($stmt) {
-            // Bind parameters
-            mysqli_stmt_bind_param($stmt, "ss", $username, $songJson);
-
-            // Execute the query
-            if (mysqli_stmt_execute($stmt)) {
-                echo json_encode(['status' => 'success', 'message' => 'Song saved successfully']);
-            } else {
-                echo json_encode(['status' => 'error', 'message' => 'Failed to save song: ' . mysqli_error($db_connection)]);
-            }
-
-            // Close the statement
-            mysqli_stmt_close($stmt);
+        $query = "INSERT INTO songs (username, song_name, content) VALUES ('$username', '$songName', '$songData')";
+        if (mysqli_query($db_connection, $query)) {
+            echo json_encode(['status' => 'success', 'message' => 'Song saved successfully']);
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Failed to prepare SQL statement']);
+            echo json_encode(['status' => 'error', 'message' => 'Failed to save song']);
         }
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Invalid song data']);
@@ -68,7 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
 }
-
 // Close the database connection
 mysqli_close($db_connection);
 ?>

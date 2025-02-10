@@ -110,7 +110,7 @@ const positionLine = (line, keyElement) => {
     const rect = keyElement.getBoundingClientRect();
     const containerRect = document.querySelector('.container').getBoundingClientRect();
     line.style.left = `${rect.left - containerRect.left + rect.width / 2 - 15}px`;
-    line.style.bottom = `400px`;  
+    line.style.bottom = `${containerRect.height - (rect.bottom - containerRect.top - 280)}px`;  
 };
 
 // moves the line
@@ -413,36 +413,86 @@ window.addEventListener('beforeunload', () => {
     }
 });
 
-// save the played song to the database based on the logged username
+// open the save song modal
+function openSaveSongModal() {
+    if (recordedSequence.length === 0) {
+        alert('No sequence recorded yet.');
+        return;
+    }
+    document.getElementById('save-song-modal').style.display = 'block';
+}
+
+// close the save song modal
+function closeSaveSongModal() {
+    document.getElementById('save-song-modal').style.display = 'none';
+}
+
+// save the song to the database
+function confirmSaveSong() {
+    const songName = document.getElementById('song-name-input').value.trim();
+    if (!songName) {
+        alert('Please enter a song name.');
+        return;
+    }
+
+    const songData = JSON.stringify(recordedSequence);
+
+    fetch('./includes/handlers/save_song.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ songName, songData })
+    })
+    .then(response => response.json())
+
+    closeSaveSongModal();
+
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     const saveButton = document.getElementById("dbsave-btn");
 
     saveButton.addEventListener("click", function () {
-        saveSong();
+        openSaveSongModal();
     });
+});
 
-    function saveSong() {
-        if (!recordedSequence || recordedSequence.length === 0) {
-            alert('No sequence recorded yet.');
-            return;
-        }
 
-        const songData = JSON.stringify(recordedSequence);
+// open the Musicbook modal
+function openMusicbookModal() {
+    fetchUserSongs();
+    document.getElementById('musicbook-modal').style.display = 'block';
+}
 
-        fetch('./includes/handlers/save_song.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: songData
-        })
+// close the Musicbook modal
+function closeMusicbookModal() {
+    document.getElementById('musicbook-modal').style.display = 'none';
+}
+
+// fetch and display songs
+function fetchUserSongs() {
+    fetch('./includes/handlers/fetch_user_songs.php')
         .then(response => response.json())
         .then(data => {
-            if (data.status === 'success') {
-                alert('Song saved successfully');
-            } else {
-                alert('Failed to save song: ' + data.message);
-            }
-        })
-    }
-});
+                const songList = document.getElementById('musicbook-song-list');
+                songList.innerHTML = '';
+                console.log(data.songs)
+                data.songs.forEach(song => {
+                    const songItem = document.createElement('div');
+                    songItem.textContent = song.song_name;
+                    console.log(songItem.textContent)
+                    songItem.addEventListener('click', () => {
+                        playSong(song.content);
+                        closeMusicbookModal();
+                    });
+                    songList.appendChild(songItem);
+                });
+        });
+}
+
+// play a song
+function playSong(songData) {
+    const sequence = JSON.parse(songData);
+    playSequence(sequence);
+}

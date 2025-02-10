@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'Bellota-BoldItalic';
+    src: url('../fonts/Bellota-BoldItalic.ttf');
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -195,4 +200,110 @@ button {
 button.active .dot {
     background-color: red;
     box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+}
+
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.close-modal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-modal:hover {
+    color: #000;
+}
+
+#song-list div a {
+    padding: 10px;
+    border: 1px solid #b30000;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+#song-list div:hover {
+    background-color: #f0f0f0;
+}
+
+
+#song-name-input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+}
+
+#save-played-btn {
+    background: darkred; 
+    color: white;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+}
+
+#save-played-btn:hover {
+    background: #b30000;
+}
+
+
+#musicbook-song-list {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+
+.song-button {
+    background: darkred;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.song-button:hover {
+    background: #b30000;
+}
+
+
+#musicbook-song-list {
+    color: #b30000;
+    font-family: 'Bellota-BoldItalic';
+
+}
+
+#music-book {
+    color: #b30000;
 }

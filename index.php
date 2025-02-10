@@ -22,6 +22,22 @@ if (!isset($_SESSION['login_username'])) {
 
 <body>
     <div class="container">
+        <div id="save-song-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeSaveSongModal()">&times;</span>
+                <input type="text" id="song-name-input" placeholder="Enter song name" required>
+                <button id="save-played-btn" onclick="confirmSaveSong()">Save played song</button>
+            </div>
+        </div>
+        <div id="musicbook-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeMusicbookModal()">&times;</span>
+                <h2 id="music-book">Musicbook</h2>
+                <div id="musicbook-song-list">
+                    <!-- Songs will be here -->
+                </div>
+            </div>
+        </div>
         <div class="navigation">
             <a href="includes/handlers/logout.php" class="logout-link">
                 <i class="icon-signout icon-3x"></i>
@@ -39,7 +55,7 @@ if (!isset($_SESSION['login_username'])) {
                     <div class="dot"></div>
                 </button>
                 <div class="button-label">MUSICBOOK</div>
-                <button id="musicbook-btn" onclick="fetchUserSongs()">
+                <button id="musicbook-btn" onclick="openMusicbookModal()">
                     <div class="dot"></div>
                 </button>
             </div>
@@ -54,10 +70,9 @@ if (!isset($_SESSION['login_username'])) {
                 </button>
                 <input id="import-file" type="file" accept=".json"  style="display: none;">
                 <div class="button-label">SAVE</div>
-                <button id="dbsave-btn" onclick="saveSong()">
+                <button id="dbsave-btn">
                     <div class="dot"></div>
                 </button>
-                <!-- <input id="import-file" type="file" accept=".json"  style="display: none;"> -->
             </div>
             <ul class="piano-keys-list">
                 <li class="piano-keys white-key" data-key="01" data-note="q"></li>
