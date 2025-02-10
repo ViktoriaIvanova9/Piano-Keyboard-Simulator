@@ -279,12 +279,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //triggers file input
 function getFileInput() {
+    console.log("AAAA")
     document.getElementById('import-file').click();
 }
 
 //listens for a event change and imports file
 let importedSequence = []
 document.getElementById('import-file').addEventListener('change', (event) => {
+    console.log("BBB")
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
@@ -400,11 +402,59 @@ document.addEventListener('DOMContentLoaded', () => {
         const downloadBtn = document.getElementById('download-btn');
         if (downloadBtn) {
             downloadBtn.click(); // Simulate click on download button
-            console.log("Download triggered via URL.");
         }
     }
+
+    if (urlParams.has('musicbook')) {
+        const songName = urlParams.get('musicbook'); // Get the song name from the URL
+        console.log("Playing song:", songName);
+        fetchSongFromDatabase(songName);
+    }
+
+
+    if (urlParams.has('save')) {
+        const songName = urlParams.get('save').trim();
+        if (recordedSequence.length === 0) {
+            alert('No sequence recorded yet.');
+        } else if (songName) {
+            const songData = JSON.stringify(recordedSequence);
+
+            fetch('./includes/handlers/save_song.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ songName, songData })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message || `Song "${songName}" saved successfully.`);
+            })
+            .catch(error => {
+                console.error("Error saving song:", error);
+            });
+        } else {
+            alert('Please provide a valid song name.');
+        }
+    }
+
 });
 
+function fetchSongFromDatabase(songName) {
+    fetch(`./includes/handlers/fetch_user_songs.php?song_name=${encodeURIComponent(songName)}`)
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success' && data.song_content) {
+            console.log(`Playing sequence for ${songName}`);
+            playSong(data.song_content);
+        } else {
+            alert(data.message || `Song "${songName}" not found.`);
+        }
+    })
+    .catch(error => {
+        console.error("Error fetching song:", error);
+    });
+}
 
 // Save recording before page unload
 window.addEventListener('beforeunload', () => {
@@ -496,3 +546,4 @@ function playSong(songData) {
     const sequence = JSON.parse(songData);
     playSequence(sequence);
 }
+
