@@ -208,36 +208,6 @@ playBtn.addEventListener('click', () => {
     }
 });
 
-//here we check if the "recordedSequence" is valid(if it has any notes recorded inside it)
-//we convert the "recordedSequence" to a json string, creates blob and temp url for it to be downloaded
-// create hyperlink from the url, 
-// function exportSequence() {
-//     if (recordedSequence.length === 0) {
-//         alert('No sequence recorded yet.');
-//         return;
-//     }
-
-//     const data = JSON.stringify(recordedSequence, null, 2); 
-//     const blob = new Blob([data], { type: 'application/json' });
-//     const url = URL.createObjectURL(blob);
-
-//     const link = document.createElement('a');
-//     link.href = url;
-//     link.download = 'recorded_sequence.json';
-//     link.click();
-
-//     URL.revokeObjectURL(url);
-
-//     const message = document.createElement('div');
-//     message.classList.add('download-message');
-//     message.textContent = 'Download started!';
-//     document.body.appendChild(message);
-
-//     setTimeout(() => {
-//         message.remove();
-//     }, 2000);
-// }
-
 function exportSequence() {
     // Fetch the recorded sequence from localStorage
     const recordedSequence = JSON.parse(localStorage.getItem('recordedSequence')) || [];
@@ -391,22 +361,22 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Show keys toggled via URL.");
     }
 
-    // Trigger file import functionality
     if (urlParams.has('song')) {
         console.log("File input triggered via URL.");
-        getFileInput()
+        setTimeout(() => {
+            document.getElementById('import-file')?.click();
+        }, 100);
     }
 
-    // Trigger download functionality
     if (urlParams.has('download')) {
         const downloadBtn = document.getElementById('download-btn');
         if (downloadBtn) {
-            downloadBtn.click(); // Simulate click on download button
+            downloadBtn.click(); 
         }
     }
 
     if (urlParams.has('musicbook')) {
-        const songName = urlParams.get('musicbook'); // Get the song name from the URL
+        const songName = urlParams.get('musicbook');
         console.log("Playing song:", songName);
         fetchSongFromDatabase(songName);
     }
@@ -456,7 +426,6 @@ function fetchSongFromDatabase(songName) {
     });
 }
 
-// Save recording before page unload
 window.addEventListener('beforeunload', () => {
     if (recordedSequence.length > 0) {
         localStorage.setItem('recordedSequence', JSON.stringify(recordedSequence));
